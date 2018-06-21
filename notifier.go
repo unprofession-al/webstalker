@@ -76,7 +76,6 @@ func NewSendGridNotifier(c string) (Notifier, error) {
 	}
 	n.Sender = tokens[0]
 	n.APIKey = tokens[1]
-	log.Printf("Sending as '%s' with API KEY '%s'", n.Sender, n.APIKey)
 
 	return n, nil
 }
