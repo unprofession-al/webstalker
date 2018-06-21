@@ -1,0 +1,9 @@
+---
+# check interval in seconds
+interval: 300
+debug: false
+sites:
+  localhost:
+    url: https://example.com
+    recipient: me@example.com
+    template: example.com has changed
