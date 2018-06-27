@@ -1,5 +1,4 @@
 ![WebStalker](./logo.svg)
-<img src="./logo.svg">
 
 Like Baywatch, but for websites. 
 
