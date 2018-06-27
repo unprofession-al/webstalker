@@ -25,7 +25,7 @@ func PrepareNotifiers() ([]Notifier, error) {
 		key := strings.ToLower(kv[0])
 		value := kv[1]
 
-		if strings.HasPrefix(key, "sitewatch_notifier") {
+		if strings.HasPrefix(key, "webstalker_notifier") {
 			for name, fn := range notifiers {
 				if strings.Contains(key, name) {
 					notifier, err := fn(value)
@@ -82,7 +82,7 @@ func NewSendGridNotifier(c string) (Notifier, error) {
 
 func (sgn SendGridNotifier) Notify(r, m string) error {
 	from := mail.NewEmail(sgn.Sender, sgn.Sender)
-	subject := "Updates from sitewatch"
+	subject := "Updates from webstalker"
 	to := mail.NewEmail(r, r)
 	plainTextContent := m
 	htmlContent := m
