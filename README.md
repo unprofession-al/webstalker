@@ -48,5 +48,5 @@ sites:
 Run this is the directory where your config lives:
 
 ```
-SITEWATCH_NOTIFIER_SENDGRID="noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIs MySendGridKey" SITEWATCH_NOTIFIER_STDOUT="YES" sitewatch
+SITEWATCH_NOTIFIER_SENDGRID="noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIs MySendGridKey" SITEWATCH_NOTIFIER_STDOUT="YES" sitewatch -config /path/to/config/file.yaml
 ```

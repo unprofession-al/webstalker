@@ -1,14 +1,25 @@
 package main
 
-import "log"
+import (
+	"flag"
+	"log"
+)
+
+var configPath string
+
+func init() {
+	flag.StringVar(&configPath, "config", "config.yaml", "path to the configuration file")
+}
 
 func main() {
+	flag.Parse()
+
 	n, err := PrepareNotifiers()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	c, err := NewChecker("./config.yaml", n)
+	c, err := NewChecker(configPath, n)
 	if err != nil {
 		log.Fatal(err)
 	}
