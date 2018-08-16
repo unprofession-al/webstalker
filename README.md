@@ -36,6 +36,8 @@ Create a config.yaml file and provide a list of websites you want to have stalke
 # check interval in seconds
 interval: 300
 debug: false
+# overwrite this config file to store the hash of each site
+store_hash: true
 sites:
   localhost:
     url: https://example.com
@@ -44,6 +46,18 @@ sites:
 ```
 
 ## Run
+
+Get a help output via option `-h`:
+
+```
+webstalker -h
+Usage of webstalker:
+  -config string
+    	path to the configuration file (default "config.yaml")
+  -single
+    	run only once (to be used when controlled via cron or simiar)
+```
+
 
 Run this is the directory where your config lives:
 

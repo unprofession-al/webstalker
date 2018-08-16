@@ -5,10 +5,14 @@ import (
 	"log"
 )
 
-var configPath string
+var (
+	configPath string
+	singleRun  bool
+)
 
 func init() {
 	flag.StringVar(&configPath, "config", "config.yaml", "path to the configuration file")
+	flag.BoolVar(&singleRun, "single", false, "run only once (to be used when controlled via cron or simiar)")
 }
 
 func main() {
@@ -24,5 +28,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	c.Run()
+	c.Run(singleRun)
 }
