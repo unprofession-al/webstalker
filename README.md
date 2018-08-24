@@ -1,6 +1,6 @@
 ![WebStalker](./logo.svg)
 
-Like Baywatch, but for websites. 
+Watch websites for changes. Like Baywatch, but for websites. 
 
 ## If...
 
