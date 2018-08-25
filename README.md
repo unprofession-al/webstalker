@@ -62,5 +62,5 @@ Usage of webstalker:
 Run this is the directory where your config lives:
 
 ```
-WEBSTALKER_NOTIFIER_SENDGRID="noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIs MySendGridKey" WEBSTALKER_NOTIFIER_STDOUT="YES" webstalker -config /path/to/config/file.yaml
+WEBSTALKER_NOTIFIER_SENDGRID="noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIsMySendGridKey" WEBSTALKER_NOTIFIER_STDOUT="YES" webstalker -config /path/to/config/file.yaml
 ```

@@ -1,9 +1,9 @@
 ---
 # check interval in seconds
-interval: 300
+interval: 10
 debug: false
 sites:
-  localhost:
-    url: https://example.com
-    recipient: me@example.com
-    template: example.com has changed
+  Random String:
+    url: https://www.random.org/strings/?num=10&len=10&digits=on&unique=on&format=html&rnd=new
+    recipient: onlyreply@example.com
+    template: There is another random string available
