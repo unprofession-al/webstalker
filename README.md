@@ -64,3 +64,29 @@ Run this is the directory where your config lives:
 ```
 WEBSTALKER_NOTIFIER_SENDGRID="noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIsMySendGridKey" WEBSTALKER_NOTIFIER_STDOUT="YES" webstalker -config /path/to/config/file.yaml
 ```
+
+Alternatively docker-compose to run `webstalker`:
+
+```
+version: '2'
+
+services:
+  webstalker:
+    image: unprfssnl/webstalker
+    restart: always
+    volumes:
+      - ./config.yaml:/config.yaml
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt
+    container_name: webstalker
+    command: webstalker -c /config.yaml
+    environment:
+    - "WEBSTALKER_NOTIFIER_SENDGRID=noreply@stalkingbastard.com SG.yG2dlva4R4KO8-ThisIsMySendGridKey"
+    - "WEBSTALKER_NOTIFIER_STDOUT=true"
+
+```
+
+... and then...
+
+```
+docker-compose up
+```
