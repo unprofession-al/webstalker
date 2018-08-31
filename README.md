@@ -39,10 +39,18 @@ debug: false
 # overwrite this config file to store the hash of each site
 store_hash: true
 sites:
-  localhost:
-    url: https://example.com
-    recipient: me@example.com
-    template: example.com has changed
+  Random String:
+    url: https://www.random.org/strings/?num=10&len=10&digits=on&unique=on&format=html&rnd=new
+    recipient: onlyreply@example.com
+    template: There is another random string available
+  Google Banner:
+    url: https://www.google.com
+    recipient: onlyreply@example.com
+    # css selector of the element to watch
+    # if not defined the whole document is consedered
+    # use github.com/suntong/cascadia to test your selector
+    selector: .hplogo
+    template: Seems that google has a new banner
 ```
 
 ## Run
