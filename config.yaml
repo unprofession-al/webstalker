@@ -7,3 +7,9 @@ sites:
     url: https://www.random.org/strings/?num=10&len=10&digits=on&unique=on&format=html&rnd=new
     recipient: onlyreply@example.com
     template: There is another random string available
+  Google Banner:
+    url: https://www.google.com
+    recipient: onlyreply@example.com
+    selector: .hplogo
+    template: Seems that google has a new banner
+

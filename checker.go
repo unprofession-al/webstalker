@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
@@ -9,6 +10,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/andybalholm/cascadia"
+	"golang.org/x/net/html"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -78,21 +81,42 @@ type Site struct {
 	URL       string `json:"url" yaml:"url"`
 	Template  string `json:"template" yaml:"template"`
 	Recipient string `json:"recipient" yaml:"recipient"`
+	Selector  string `json:"selector" yaml:"selector"`
 	Hash      string `json:"hash" yaml:"hash"`
 }
 
 func (s *Site) Check(n []Notifier) error {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("Recovered from error '%s' while checking %s\n", r, s.URL)
+		}
+	}()
 	oldHash := s.Hash
 	response, err := http.Get(s.URL)
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
+	content, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return err
 	}
-	s.Hash = GetMD5Hash(string(contents))
+
+	if s.Selector == "" {
+		s.Hash = GetMD5Hash(string(content))
+	} else {
+		sel, err := cascadia.Compile(s.Selector)
+		if err != nil {
+			return err
+		}
+		r := bytes.NewReader(content)
+		node, err := html.Parse(r)
+		if err != nil {
+			return err
+		}
+		firstMatch := sel.MatchFirst(node)
+		s.Hash = GetMD5Hash(firstMatch.Data)
+	}
 	if oldHash != "" && oldHash != s.Hash {
 		for _, notifier := range n {
 			err = notifier.Notify(s.Recipient, s.Template)
