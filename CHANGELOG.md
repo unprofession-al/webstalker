@@ -1,3 +1,9 @@
+# v0.1.2
+
+## Notable changes since v0.1.1
+
+* __Docker Build:__ Use go 1.11 to build.
+
 # v0.1.1
 
 ## Notable changes since v0.1.0
