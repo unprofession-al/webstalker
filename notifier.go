@@ -8,6 +8,7 @@ import (
 
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 var notifiers map[string]func(string) (Notifier, error)
@@ -16,6 +17,7 @@ func init() {
 	notifiers = make(map[string]func(string) (Notifier, error))
 	notifiers["stdout"] = NewStdOutNotifier
 	notifiers["sendgrid"] = NewSendGridNotifier
+	notifiers["telegram"] = NewTelegramNotifier
 }
 
 func PrepareNotifiers() ([]Notifier, error) {
@@ -89,5 +91,34 @@ func (sgn SendGridNotifier) Notify(r, m string) error {
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	client := sendgrid.NewSendClient(sgn.APIKey)
 	_, err := client.Send(message)
+	return err
+}
+
+type TelegramNotifier struct {
+	bot      *tgbotapi.BotAPI
+	chatName string
+}
+
+func NewTelegramNotifier(c string) (Notifier, error) {
+	n := TelegramNotifier{}
+
+	tokens := strings.Fields(c)
+	if len(tokens) != 2 {
+		return n, fmt.Errorf("Malformend config for Telegram notifier: %s", c)
+	}
+
+	n.chatName = tokens[0]
+	bot, err := tgbotapi.NewBotAPI(tokens[1])
+	if err != nil {
+		return n, fmt.Errorf("Error while preparing Telegram notifier: %s", err.Error())
+	}
+	n.bot = bot
+
+	return n, nil
+}
+
+func (tn TelegramNotifier) Notify(r, m string) error {
+	msg := tgbotapi.NewMessageToChannel(tn.chatName, m)
+	_, err := tn.bot.Send(msg)
 	return err
 }
