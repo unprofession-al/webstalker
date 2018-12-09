@@ -1,4 +1,4 @@
-FROM golang:1.11rc2 AS build
+FROM golang:1.11 AS build
 WORKDIR /go/src/app
 COPY . .
 RUN go get -d -v ./...

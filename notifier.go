@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 
+	"github.com/alecthomas/template"
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -48,7 +50,28 @@ func PrepareNotifiers() ([]Notifier, error) {
 }
 
 type Notifier interface {
-	Notify(recipient string, message string) error
+	Notify(recipient string, message string, diff string) error
+}
+
+func renderTemplate(m, d string) (string, error) {
+	var data = struct {
+		Diff string
+	}{
+		Diff: d,
+	}
+
+	tmpl, err := template.New("tmpl").Parse(m)
+	if err != nil {
+		return "", err
+	}
+
+	var b bytes.Buffer
+	err = tmpl.Execute(&b, data)
+	if err != nil {
+		return "", err
+	}
+
+	return b.String(), nil
 }
 
 type StdOutNotifier struct{}
@@ -57,8 +80,12 @@ func NewStdOutNotifier(c string) (Notifier, error) {
 	return StdOutNotifier{}, nil
 }
 
-func (son StdOutNotifier) Notify(r, m string) error {
-	fmt.Printf("\tTo: %s\n\t%s\n", r, m)
+func (son StdOutNotifier) Notify(r, m, d string) error {
+	msg, err := renderTemplate(m, d)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("\tTo: %s\n\t%s\n", r, msg)
 	return nil
 }
 
@@ -80,14 +107,18 @@ func NewSendGridNotifier(c string) (Notifier, error) {
 	return n, nil
 }
 
-func (sgn SendGridNotifier) Notify(r, m string) error {
+func (sgn SendGridNotifier) Notify(r, m, d string) error {
+	msg, err := renderTemplate(m, d)
+	if err != nil {
+		return err
+	}
 	from := mail.NewEmail(sgn.Sender, sgn.Sender)
 	subject := "Updates from webstalker"
 	to := mail.NewEmail(r, r)
-	plainTextContent := m
-	htmlContent := m
+	plainTextContent := msg
+	htmlContent := msg
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	client := sendgrid.NewSendClient(sgn.APIKey)
-	_, err := client.Send(message)
+	_, err = client.Send(message)
 	return err
 }
