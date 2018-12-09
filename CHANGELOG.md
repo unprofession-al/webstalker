@@ -1,3 +1,10 @@
+# v0.1.3
+
+## Notable changes since v0.1.2
+
+* __go mod:__ Use go mod for dependency management.
+* __diff:__ Allow do use `{{ .Diff }}` in the templates.
+
 # v0.1.2
 
 ## Notable changes since v0.1.1
