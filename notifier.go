@@ -116,7 +116,7 @@ func (sgn SendGridNotifier) Notify(r, m, d string) error {
 	subject := "Updates from webstalker"
 	to := mail.NewEmail(r, r)
 	plainTextContent := msg
-	htmlContent := msg
+	htmlContent := ""
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	client := sendgrid.NewSendClient(sgn.APIKey)
 	_, err = client.Send(message)
