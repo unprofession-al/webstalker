@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/alecthomas/template"
 	sendgrid "github.com/sendgrid/sendgrid-go"
@@ -85,7 +86,8 @@ func (son StdOutNotifier) Notify(r, m, d string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("\tTo: %s\n\t%s\n", r, msg)
+	ts := time.Now()
+	fmt.Printf("\tTimestamp: %s\n\tTo: %s\n\t%s\n", ts.String(), r, msg)
 	return nil
 }
 
