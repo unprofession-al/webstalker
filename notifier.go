@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"log"
 	"os"
 	"strings"
@@ -118,7 +119,7 @@ func (sgn SendGridNotifier) Notify(r, m, d string) error {
 	subject := "Updates from webstalker"
 	to := mail.NewEmail(r, r)
 	plainTextContent := msg
-	htmlContent := ""
+	htmlContent := html.EscapeString(msg)
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	client := sendgrid.NewSendClient(sgn.APIKey)
 	_, err = client.Send(message)
